@@ -31,7 +31,7 @@ CROSS_COMPILER_TARGET_ARCHS =
 #INSTALL_LOCATION=<fullpathname>
 
 # Note: Must add $(NET_SNMP)/lib to LD_LIBRARY_PATH in your sioc/<ioc-name>/startup.cmd
-NET_SNMP_PKG	= $(PSPKG_ROOT)/release/net-snmp/5.7.2/$(EPICS_HOST_ARCH)/
+NET_SNMP_PKG	= $(PSPKG_ROOT)/release/net-snmp/5.9.4/$(EPICS_HOST_ARCH)/
 USR_INCLUDES += -I$(NET_SNMP_PKG)/include
 USR_LDFLAGS  += -L$(NET_SNMP_PKG)/lib 
 USR_SYS_LIBS += netsnmp

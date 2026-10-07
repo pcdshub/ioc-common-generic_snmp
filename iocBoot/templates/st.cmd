@@ -1,8 +1,5 @@
 #!$$IOCTOP/bin/$$IF(ARCH,$$ARCH,rhel7-x86_64)/snmp
 
-# Run common startup commands for linux soft IOC's
-< $(IOC_COMMON)/All/pre_linux.cmd
-
 < envPaths
 epicsEnvSet( "IOCNAME",      "$$IOCNAME" )
 epicsEnvSet( "ENGINEER",     "$$ENGINEER" )
@@ -11,6 +8,7 @@ epicsEnvSet( "IOCSH_PS1",    "$(IOCNAME)> " )
 epicsEnvSet( "IOC_PV",       "$$IOC_PV" )
 epicsEnvSet( "IOCTOP",       "$$IOCTOP" )
 epicsEnvSet( "BUILD_TOP",    "$$TOP" )
+epicsEnvSet( "ACF_FILE",     "$(IOCTOP)/iocBoot/templates/unrestricted.acf" )
 epicsEnvSet( "MIBDIRS",	  "$(IOCTOP)/mibs:/usr/share/snmp/mibs:/reg/g/pcds/package/net-snmp-5.7.2/share/snmp/mibs" )
 
 epicsEnvSet( "FAST_EVENT",    "2")
@@ -19,6 +17,9 @@ epicsEnvSet( "SLOW_EVENT",    "4")
 epicsEnvSet( "DEFAULT_EVENT", "4")
 
 cd( "$(IOCTOP)" )
+
+# Run common startup commands for linux soft IOC's
+< $(IOC_COMMON)/All/pre_linux.cmd
 
 # Set Max array size
 epicsEnvSet( "EPICS_CA_MAX_ARRAY_BYTES", "$$IF(MAX_ARRAY,$$MAX_ARRAY,20000000)" )
@@ -87,7 +88,21 @@ set_pass1_restoreFile( "$(IOC).sav" )
 #
 # Initialize the IOC and start processing records
 #
+# Configure access security: this is required for caPutLog.
+asSetFilename("$(ACF_FILE)")
+
 iocInit()
+
+# Enable logging
+iocLogInit()
+
+# caPutLogInit("HOST:PORT", config)
+# config options:
+#       caPutLogNone       -1: no logging (disable)
+#       caPutLogOnChange    0: log only on value change
+#       caPutLogAll         1: log all puts
+#       caPutLogAllNoFilter 2: log all puts no filtering on same PV
+caPutLogInit("${EPICS_CAPUTLOG_HOST}:${EPICS_CAPUTLOG_PORT}", 0)
 
 write_mib_tree( "$(IOC_DATA)/$(IOC)/iocInfo/mib_tree.txt" )
 

@@ -1,8 +1,5 @@
 #!$$IOCTOP/bin/$$IF(ARCH,$$ARCH,rhel7-x86_64)/snmp
 
-# Run common startup commands for linux soft IOC's
-< $(IOC_COMMON)/All/pre_linux.cmd
-
 < envPaths
 epicsEnvSet( "IOCNAME",      "$$IOCNAME" )
 epicsEnvSet( "ENGINEER",     "$$ENGINEER" )
@@ -20,6 +17,9 @@ epicsEnvSet( "SLOW_EVENT",    "4")
 epicsEnvSet( "DEFAULT_EVENT", "4")
 
 cd( "$(IOCTOP)" )
+
+# Run common startup commands for linux soft IOC's
+< $(IOC_COMMON)/All/pre_linux.cmd
 
 # Set Max array size
 epicsEnvSet( "EPICS_CA_MAX_ARRAY_BYTES", "$$IF(MAX_ARRAY,$$MAX_ARRAY,20000000)" )

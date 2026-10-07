@@ -19,6 +19,7 @@ snmp_DBD +=	base.dbd
 snmp_DBD +=	iocAdmin.dbd
 snmp_DBD +=	asSupport.dbd
 snmp_DBD +=	devSnmp.dbd
+snmp_DBD +=	caPutLog.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 snmp_SRCS += snmp_registerRecordDeviceDriver.cpp
@@ -31,6 +32,7 @@ snmp_SRCS_DEFAULT += snmpMain.cpp
 snmp_LIBS += autosave
 snmp_LIBS += devIocStats
 snmp_LIBS += devSnmp
+snmp_LIBS += caPutLog
 snmp_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 SYS_LIBS	+= crypto
